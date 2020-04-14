@@ -5,11 +5,16 @@
 #include <time.h>// datapoint time value
 #include <stdint.h>// uint32_t for defining color
 #include <regex.h>// keep in mind this is POSIX, and linux only
+#include "mergesort.h"
 
 // TODO
 // this should be settable by the user, but for now it's just a variable
 #define MAXLINES 1024
 #define MAX_ERROR_MSG 0x1000
+// these are each the regex that can be used to identify certain values
+#define INT_REGEX "\\(-\\{0,1\\}[0-9]\\{1,2\\}\\)"
+#define FLOAT_REGEX "\\(-\\{0,1\\}[0-9]\\{1,\\}\\.\\{0,1\\}[0-9]*\\)"
+#define POSITIVE_INT_REGEX "\\([0-9]\\{1,2\\}\\)"
 
 // vectors
 typedef struct {
@@ -75,6 +80,13 @@ typedef struct {
     union dt data;
 } pt;
 
+// dynamic array
+typedef struct {
+    pt* array;
+    size_t used;
+    size_t size;
+} ptarray;
+
 // datagroup struct
 typedef struct {
     char* name; // name of the datagroup
@@ -88,7 +100,7 @@ typedef struct {
     char* dtstr; // data extractor string
     unsigned short dtordr[7];
     regex_t dtext; // data extractor
-    pt* point; // all of the data points
+    ptarray dt; // all of the data points
 } grp;
 // dtordr and tmordr are in a class of varible called datapoint order
 // this is used to map the order in the regex to the expected order.
@@ -96,6 +108,27 @@ typedef struct {
 // order for the data is X,Y,Z. So 0 (X) would be 1, 1 (Y) would be 2, and 2 (Z)
 // would be 0. There are enough here to hold DateTime, the element with the
 // greatest number of elements.
+
+// init the datapoint array
+void initdparray(ptarray* a, size_t initsize) {
+    a->array = (pt*)malloc(initsize * sizeof(pt));
+    a->used = 0;
+    a->size = initsize;
+}
+// insert an element into the datapoint array
+void indparray(ptarray* a, pt element) {
+    if (a->used == a->size) {
+        a->size *= 2;
+        a->array = (pt*)realloc(a->array, a->size * sizeof(pt));
+    }
+    a->array[a->used++] = element;
+}
+// free the datapoint array
+void freedparray(ptarray* a) {
+    free(a->array);
+    a->array = NULL;
+    a->used = a->size = 0;
+}
 
 // *****************************************************************************
 // The Extractor
@@ -209,67 +242,6 @@ char* replace(char* text, char* ftext, char* rtext, int constflag) {
     return otext;
 }
 
-// ****************************************************************************
-// Merge Sort the format function arrays
-// This sorts one array using another array
-// ****************************************************************************
-// sorts the working array into the output array
-void mrg(char** work, unsigned short* work_,
-         size_t start, size_t mid, size_t end,
-         char** out, unsigned short* out_) {
-    size_t i = start;
-    size_t j = mid;
-
-    for (size_t k = start; k < end; k++) {
-        // if the left run head exists and is <= the existing right run head
-        // NULL is weighted to be at the end of the list
-        // If the right run is null or the left run is not null then the left
-        // run must be greater than the right run or the right run is null. If
-        // that is true then use the left run, otherwise use the right run.
-        if (i < mid && (j >= end ||
-                    ((work[j] == NULL || work[i] != NULL) &&
-                     (work[i] <= work[j] || work[j] == NULL)))) {
-            out_[k] = work_[i];
-            out[k] = work[i++];
-        } else {
-            out_[k] = work_[j];
-            out[k] = work[j++];
-        }
-    }
-}
-
-// sort out array using the working array
-// start in inclusive, end is exclusive
-void spltmrg(char** work, unsigned short* work_,
-             size_t start, size_t end,
-             char** out, unsigned short* out_) {
-    if (end - start < 2) // if the size is 1 it's sorted
-        return;
-    // split it in half
-    size_t mid = (end + start) / 2;
-    // recursively sort the halves
-    spltmrg(out, out_, start, mid, work, work_);
-    spltmrg(out, out_, mid, end, work, work_);
-
-    // merge the two runs
-    mrg(work, work_, start, mid, end, out, out_);
-}
-
-// this takes in the two arrays, the array to sort by (in) and the array that
-// is being sorted by, (in_). It then creates working arrays and copies over
-// the input arrays into those. It then calls a function to sort the working
-// arrays into the input arrays
-void mrgsrt(char** in, unsigned short* in_, size_t n) {
-    char* work[n];
-    unsigned short work_[n];
-    memcpy(work, in, sizeof(char*)*n);
-    memcpy(work_, in_, sizeof(unsigned short)*n);
-    spltmrg(work, work_, 0, n, in, in_);
-}
-// ****************************************************************************
-// End Merge Sort
-// ****************************************************************************
-
 // takes in a string, a matchptr, and return the number at that location
 int mtchstoi(char* str, regmatch_t matchptr) {
     int n = 0;
@@ -295,7 +267,7 @@ float mtchstof(char* str, regmatch_t matchptr) {
     for (int i = matchptr.rm_so+neg; i < matchptr.rm_eo; i++) {
         if (str[i] == '.') {
             dot = i+1;
-            // add 1 so that if the dot is at point 0 "if (dot)" is still true
+            // add 1 so that if the dot is at point 0, "if (dot)" is still true
             // this has the added benefit that when the decimal for loop starts
             // it starts after the dot.
             break;
@@ -305,7 +277,7 @@ float mtchstof(char* str, regmatch_t matchptr) {
     }
     // decimals
     if (dot) {
-        int mult = 0.1;
+        float mult = 0.1;
         for (int i = dot; i < matchptr.rm_eo; i++) {
             n += (str[i] - '0') * mult;
             mult *= 0.1;
@@ -338,10 +310,10 @@ void timeformat(grp* group, char* text) {
         // sort the tmordr array using the regorder array
         mrgsrt(regorder, group->tmordr, 4);
         // create the regex from the user input
-        regtxt = replace(text, "$H", "\\([0-9]\\{1,2\\}\\)", 1);
-        regtxt = replace(regtxt, "$M", "\\([0-9]\\{1,2\\}\\)", 0);
-        regtxt = replace(regtxt, "$S", "\\([0-9]\\{1,2\\}\\)", 0);
-        regtxt = replace(regtxt, "$m", "\\([0-9]\\{1,3\\}\\)", 0);
+        regtxt = replace(text, "$H", POSITIVE_INT_REGEX, 1);
+        regtxt = replace(regtxt, "$M", POSITIVE_INT_REGEX, 0);
+        regtxt = replace(regtxt, "$S", POSITIVE_INT_REGEX, 0);
+        regtxt = replace(regtxt, "$m", POSITIVE_INT_REGEX, 0);
         break;
       case DateTime:
         break;
@@ -375,9 +347,9 @@ void dataformat(grp* group, char* text) {
         // sort the tmordr array using the regorder array
         mrgsrt(regorder, group->dtordr, 3);
         // create the regex from the user input
-        regtxt = replace(text, "$X","\\([0-9]\\{1,\\}\\)", 1);
-        regtxt = replace(regtxt, "$Y","\\([0-9]\\{1,\\}\\)", 0);
-        regtxt = replace(regtxt, "$Z","\\([0-9]\\{1,\\}\\)", 0);
+        regtxt = replace(text, "$X", FLOAT_REGEX, 1);
+        regtxt = replace(regtxt, "$Y", FLOAT_REGEX, 0);
+        regtxt = replace(regtxt, "$Z", FLOAT_REGEX, 0);
         break;
       case Vec4d:
         break;
@@ -390,6 +362,85 @@ void dataformat(grp* group, char* text) {
     }
     regexcompile(&group->dtext, regtxt);
     free(regtxt);
+}
+
+// load time information
+void loadtm(char* line, regmatch_t* matchptr, grp* dtgrp, pt* point) {
+    switch (dtgrp->tmfmt) {
+      case Epoch:
+        break;
+      case Date:
+        break;
+      case Time:;
+        int hour, min, sec, mil = -1;
+        for (int i = 0; i < 4; i++) {
+            regmatch_t match = matchptr[dtgrp->tmordr[i]+1];
+            if (match.rm_eo < 0)
+                continue;
+            switch (i) {
+              case 0:
+                hour = mtchstoi(line, match);
+                break;
+              case 1:
+                min = mtchstoi(line, match);
+                break;
+              case 2:
+                sec = mtchstoi(line, match);
+                break;
+              case 3:
+                mil = mtchstoi(line, match);
+                break;
+            }
+        }
+        point->time.ml = (mil == -1);
+        point->time.date = 0;
+        point->time.time = sec + (min * 60) + (hour * 360);
+        break;
+      case DateTime:
+        break;
+      default:
+        break;
+    }
+}
+
+// load data
+void loaddt(char* line, regmatch_t* matchptr, grp* dtgrp, pt* point) {
+    switch (dtgrp->dtfmt) {
+        case Int:
+          break;
+        case Float:
+          break;
+        case String:
+          break;
+        case Vec2d:
+          break;
+        case Vec3d:
+          for (int i = 0; i < 3; i++) {
+              regmatch_t match = matchptr[dtgrp->dtordr[i]+1];
+              if (match.rm_eo < 0)
+                  continue;
+              switch (i) {
+                case 0:
+                  point->data.vec3d.x = mtchstof(line, match);
+                  break;
+                case 1:
+                  point->data.vec3d.y = mtchstof(line, match);
+                  break;
+                case 2:
+                  point->data.vec3d.z = mtchstof(line, match);
+                  break;
+              }
+          }
+          break;
+        case Vec4d:
+          break;
+        case ColorRGB:
+          break;
+        case ColorHex:
+          break;
+        default:
+          break;
+    }
 }
 
 int main(int argc, char** argv) {
@@ -467,6 +518,10 @@ int main(int argc, char** argv) {
     timeformat(&vec3dg, "\\[$H:$M:$S\\]");
     regexcompile(&vec3dg.idext, "Vec3");
     dataformat(&vec3dg, "($X,$Y,$Z)");
+    initdparray(&vec3dg.dt, 32);// TODO figure out a good starting size
+    // Here's an idea. init the arrays at the beginning of the data groups for loop
+    // Assume that each data group takes up about the same space, so divide the
+    // lncount by the grpcnt and get the size of the init datapoint array
 
     // End Create datagroup structures.
 
@@ -491,85 +546,21 @@ int main(int argc, char** argv) {
                     reti = regexec(&dtgrps[j]->timeext, lines[i], 8, matchptr, 0);
                     // load the time from the line into the data structure
                     if (!reti) {
-                        switch (dtgrps[j]->tmfmt) {
-                          case Epoch:
-                            break;
-                          case Date:
-                            break;
-                          case Time:;
-                            int hour, min, sec, mil = -1;
-                            for (int k = 0; k < 4; k++) {
-                                regmatch_t match = matchptr[dtgrps[j]->tmordr[k]+1];
-                                if (match.rm_eo < 0)
-                                    continue;
-                                switch (k) {
-                                  case 0:
-                                    hour = mtchstoi(lines[i], match);
-                                    break;
-                                  case 1:
-                                    min = mtchstoi(lines[i], match);
-                                    break;
-                                  case 2:
-                                    sec = mtchstoi(lines[i], match);
-                                    break;
-                                  case 3:
-                                    mil = mtchstoi(lines[i], match);
-                                    break;
-                                }
-                            }
-                            point.time.ml = (mil == -1);
-                            point.time.date = (1==0);
-                            point.time.time = sec + (min * 60) + (hour * 360);
-                            break;
-                          case DateTime:
-                            break;
-                          default:
-                            break;
-                        }
+                        loadtm(lines[i], matchptr, dtgrps[j], &point);
+                    } else {
+                        printf("Time formatting error\n");
                     }
                     free(matchptr);
                     matchptr = malloc(sizeof(regmatch_t)*5);
                     reti = regexec(&dtgrps[j]->dtext, lines[i], 5, matchptr, 0);
                     // load the data from the line into the data structure
                     if (!reti) {
-                        switch (dtgrps[j]->dtfmt) {
-                            case Int:
-                              break;
-                            case Float:
-                              break;
-                            case String:
-                              break;
-                            case Vec2d:
-                              break;
-                            case Vec3d:
-                              for (int k = 0; k < 3; k++) {
-                                  regmatch_t match = matchptr[dtgrps[j]->dtordr[k]+1];
-                                  if (match.rm_eo < 0)
-                                      continue;
-                                  switch (k) {
-                                    case 0:
-                                      point.data.vec3d.x = mtchstof(lines[i], match);
-                                      break;
-                                    case 1:
-                                      point.data.vec3d.y = mtchstof(lines[i], match);
-                                      break;
-                                    case 2:
-                                      point.data.vec3d.z = mtchstof(lines[i], match);
-                                      break;
-                                  }
-                              }
-                              break;
-                            case Vec4d:
-                              break;
-                            case ColorRGB:
-                              break;
-                            case ColorHex:
-                              break;
-                            default:
-                              break;
-                        }
+                        loaddt(lines[i], matchptr, dtgrps[j], &point);
+                    } else {
+                        printf("Data formatting error\n");
                     }
-                    dtgrps[j]->point = &point;
+                    // insert the datapoint into the array
+                    indparray(&dtgrps[j]->dt, point);
                     free(matchptr);
                 }
             }
@@ -578,10 +569,14 @@ int main(int argc, char** argv) {
         free(lines);
     }
 
-    regfree(&vec3dg.timeext);
-    regfree(&vec3dg.idext);
-    regfree(&vec3dg.dtext);
-    // regex free
+    for (int i = 0; i < grpcnt; i++) {
+        printf("%d\n",(int)dtgrps[i]->dt.used);
+        regfree(&dtgrps[i]->timeext);
+        regfree(&dtgrps[i]->idext);
+        regfree(&dtgrps[i]->dtext);
+        freedparray(&dtgrps[i]->dt);
+        // regex free
+    }
 
     if (filename)
         free(filename);
