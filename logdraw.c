@@ -37,7 +37,7 @@ typedef struct {
 union dt {
     long int i; // integer
     float f; // float
-    char str[32]; // string
+    char str[32]; // string// TODO handle arbitrary length strings
     v2d vec2d; // 2d vector
     v3d vec3d; // 3d vector
     v4d vec4d; // 4d vector
@@ -287,23 +287,64 @@ float mtchstof(char* str, regmatch_t matchptr) {
         n *= -1;
     return n;
 }
+// as above but with a hex value
+// this is laser focused on the clr value in the data value of a datapoint
+char toup(char c) {
+    if (c >= 'a')
+        return c-0x20;
+    else
+        return c;
+}
+int isdgt(char c) {
+    if (c >= '0' && c <= '9')
+        return 1;
+    else
+        return 0;
+}
+uint32_t mtchstox(char* str, regmatch_t matchptr) {
+    uint32_t n = 0;
+    for (int i = matchptr.rm_so; i < matchptr.rm_eo; i++) {
+        n *= 0x10;
+        if (isdgt(str[i]))
+            n += str[i] - '0';
+        else
+            n += toup(str[i]) - 'A' + 0xA;
+    }
+    return n;
+}
 
 // create the regex for time
 void timeformat(grp* group, char* text) {
     char* regtxt;
+    char* regorder[7];
     // the behavior depends on the format of time
     switch(group->tmfmt){
-      case Epoch:
+      case Epoch:;
+        regorder[0] = strstr(text, "$E"); // epoch time
+        regorder[1] = strstr(text, "$m"); // milliseconds
+        for (int i = 0; i < 2; i++)
+            group->tmordr[i] = i;
+        mrgsrt(regorder, group->tmordr, 2);
+        regtxt = replace(text, "$E", POSITIVE_INT_REGEX, 1);
+        regtxt = replace(text, "$m", POSITIVE_INT_REGEX, 0);
         break;
       case Date:
+        regorder[0] = strstr(text, "$Y");
+        regorder[1] = strstr(text, "$o"); //month
+        regorder[2] = strstr(text, "$D");
+        for (int i = 0; i < 3; i++)
+            group->tmordr[i] = i;
+        mrgsrt(regorder, group->tmordr, 3);
+        regtxt = replace(text, "$Y", POSITIVE_INT_REGEX, 1);
+        regtxt = replace(regtxt, "$o", POSITIVE_INT_REGEX, 0);
+        regtxt = replace(regtxt, "$D", POSITIVE_INT_REGEX, 0);
         break;
       case Time:;//empty statement to avoid compile errors
         // extract the order of elements from the text
-        char* regorder[4] = {
-            strstr(text, "$H"),
-            strstr(text, "$M"),  // minutes
-            strstr(text, "$S"),
-            strstr(text, "$m")}; // milliseconds
+        regorder[0] = strstr(text, "$H");
+        regorder[1] = strstr(text, "$M"); // minutes
+        regorder[2] = strstr(text, "$S");
+        regorder[3] = strstr(text, "$m"); // milliseconds
         // fill the tmordr array
         for (int i = 0; i < 4; i++)
             group->tmordr[i] = i;
@@ -316,6 +357,23 @@ void timeformat(grp* group, char* text) {
         regtxt = replace(regtxt, "$m", POSITIVE_INT_REGEX, 0);
         break;
       case DateTime:
+        regorder[0] = strstr(text, "$Y");
+        regorder[1] = strstr(text, "$o"); //month
+        regorder[2] = strstr(text, "$D");
+        regorder[3] = strstr(text, "$H");
+        regorder[4] = strstr(text, "$M"); // minutes
+        regorder[5] = strstr(text, "$S");
+        regorder[6] = strstr(text, "$m"); // milliseconds
+        for (int i = 0; i < 7; i++)
+            group->tmordr[i] = i;
+        mrgsrt(regorder, group->tmordr, 7);
+        regtxt = replace(text, "$Y", POSITIVE_INT_REGEX, 1);
+        regtxt = replace(regtxt, "$o", POSITIVE_INT_REGEX, 0);
+        regtxt = replace(regtxt, "$D", POSITIVE_INT_REGEX, 0);
+        regtxt = replace(regtxt, "$H", POSITIVE_INT_REGEX, 0);
+        regtxt = replace(regtxt, "$M", POSITIVE_INT_REGEX, 0);
+        regtxt = replace(regtxt, "$S", POSITIVE_INT_REGEX, 0);
+        regtxt = replace(regtxt, "$m", POSITIVE_INT_REGEX, 0);
         break;
       default:
         break;
@@ -366,26 +424,57 @@ void dataformat(grp* group, char* text) {
 
 // load time information
 void loadtm(char* line, regmatch_t* matchptr, grp* dtgrp, pt* point) {
+    struct tm t;
+    t.tm_sec = 0;
+    t.tm_min = 0;
+    t.tm_hour = 0;
+    t.tm_mday = 1;
+    t.tm_mon = 0;
+    t.tm_year = 0;
+    t.tm_isdst = -1;
+    int mil = -1;
     switch (dtgrp->tmfmt) {
       case Epoch:
+        point->time.date = 1;
+        regmatch_t match = matchptr[dtgrp->tmordr[1]];
+        if (match.rm_eo < 0)
+            return;
         break;
       case Date:
+        point->time.date = 1;
+        point->time.ml = 0;
+        for (int i = 0; i < 3; i++) {
+            regmatch_t match = matchptr[dtgrp->tmordr[i]+1];
+            if (match.rm_eo < 0)
+                continue;
+            switch (i) {
+              case 0:
+                t.tm_year = mtchstoi(line, match) - 1900;
+                break;
+              case 1:
+                t.tm_mon = mtchstoi(line, match);
+                break;
+              case 2:
+                t.tm_mday = mtchstoi(line, match);
+                break;
+            }
+        }
+        point->time.time = mktime(&t);
         break;
-      case Time:;
-        int hour, min, sec, mil = -1;
+      case Time:
         for (int i = 0; i < 4; i++) {
             regmatch_t match = matchptr[dtgrp->tmordr[i]+1];
             if (match.rm_eo < 0)
                 continue;
             switch (i) {
               case 0:
-                hour = mtchstoi(line, match);
+                t.tm_hour = mtchstoi(line, match);
                 break;
               case 1:
-                min = mtchstoi(line, match);
+                t.tm_min = mtchstoi(line, match);
                 break;
               case 2:
-                sec = mtchstoi(line, match);
+                t.tm_sec = mtchstoi(line, match);
                 break;
               case 3:
                 mil = mtchstoi(line, match);
@@ -394,9 +483,41 @@ void loadtm(char* line, regmatch_t* matchptr, grp* dtgrp, pt* point) {
         }
         point->time.ml = (mil == -1);
         point->time.date = 0;
-        point->time.time = sec + (min * 60) + (hour * 360);
+        point->time.time = mktime(&t);
         break;
       case DateTime:
+        point->time.date = 1;
+        for (int i = 0; i < 7; i++) {
+            regmatch_t match = matchptr[dtgrp->tmordr[i]+1];
+            if (match.rm_eo < 0)
+                continue;
+            switch(i) {
+              case 0:
+                t.tm_year = mtchstoi(line, match) - 1900;
+                break;
+              case 1:
+                t.tm_mon = mtchstoi(line, match);
+                break;
+              case 2:
+                t.tm_mday = mtchstoi(line, match);
+                break;
+              case 3:
+                t.tm_hour = mtchstoi(line, match);
+                break;
+              case 4:
+                t.tm_min = mtchstoi(line, match);
+                break;
+              case 5:
+                t.tm_sec = mtchstoi(line, match);
+                break;
+              case 6:
+                mil = mtchstoi(line, match);
+                break;
+            }
+        }
+        point->time.ml = (mil == -1);
+        point->time.date = 0;
+        point->time.time = mktime(&t);
         break;
       default:
         break;
@@ -405,14 +526,41 @@ void loadtm(char* line, regmatch_t* matchptr, grp* dtgrp, pt* point) {
 
 // load data
 void loaddt(char* line, regmatch_t* matchptr, grp* dtgrp, pt* point) {
+    regmatch_t match = matchptr[dtgrp->dtordr[1]];
     switch (dtgrp->dtfmt) {
         case Int:
+          if (match.rm_eo < 0)
+              return;
+          point->data.i = mtchstoi(line, match);
           break;
         case Float:
+          if (match.rm_eo < 0)
+              return;
+          point->data.f = mtchstof(line, match);
           break;
-        case String:
+        case String:;
+          if (match.rm_eo < 0)
+              return;
+          for (int i = match.rm_so; i < match.rm_eo; i++) { 
+              if (i - match.rm_so > 32)// TODO handle arbitrary length strings
+                  break;
+              point->data.str[i] = line[i];
+          }
           break;
         case Vec2d:
+          for (int i = 0; i < 2; i++) {
+              regmatch_t match = matchptr[dtgrp->dtordr[i]+1];
+              if (match.rm_eo < 0)
+                  continue;
+              switch (i) {
+                case 0:
+                  point->data.vec2d.x = mtchstof(line, match);
+                  break;
+                case 1:
+                  point->data.vec2d.y = mtchstof(line, match);
+                  break;
+              }
+          }
           break;
         case Vec3d:
           for (int i = 0; i < 3; i++) {
@@ -433,10 +581,53 @@ void loaddt(char* line, regmatch_t* matchptr, grp* dtgrp, pt* point) {
           }
           break;
         case Vec4d:
+          for (int i = 0; i < 4; i++) {
+              regmatch_t match = matchptr[dtgrp->dtordr[i]+1];
+              if (match.rm_eo < 0)
+                  continue;
+              switch (i) {
+                case 0:
+                  point->data.vec4d.x = mtchstof(line, match);
+                  break;
+                case 1:
+                  point->data.vec4d.y = mtchstof(line, match);
+                  break;
+                case 2:
+                  point->data.vec4d.z = mtchstof(line, match);
+                  break;
+                case 3:
+                  point->data.vec4d.w = mtchstof(line, match);
+              }
+          }
           break;
-        case ColorRGB:
+        case ColorRGB:;
+          unsigned char r, g, b, a = 0;
+          for (int i = 0; i < 4; i ++) {
+              regmatch_t match = matchptr[dtgrp->dtordr[i]+1];
+              if (match.rm_eo < 0)
+                  continue;
+              switch (i) {
+                case 0:
+                  r = (char)mtchstoi(line, match);
+                  break;
+                case 1:
+                  g = (char)mtchstoi(line, match);
+                  break;
+                case 2:
+                  b = (char)mtchstoi(line, match);
+                  break;
+                case 3:
+                  a = (char)mtchstoi(line, match);
+                  break;
+              }
+          }
+          // insert each color value into the correct place in the clr variable
+          point->data.clr = (r * 0x1000000) + (g * 0x10000) + (b * 0x100) + a;
           break;
         case ColorHex:
+          if (match.rm_eo < 0)
+              return;
+          point->data.clr = mtchstox(line, match);
           break;
         default:
           break;
