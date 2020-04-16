@@ -7,6 +7,7 @@
 #include <regex.h>// keep in mind this is POSIX, and linux only
 #include "mergesort.h"
 #include "datapoint.h"
+#include "draw.h"
 
 // TODO
 // this should be settable by the user, but for now it's just a variable
@@ -247,7 +248,7 @@ void timeformat(grp* group, char* text) {
             group->tmordr[i] = i;
         mrgsrt(regorder, group->tmordr, 2);
         regtxt = replace(text, "$E", POSITIVE_INT_REGEX, 1);
-        regtxt = replace(text, "$m", POSITIVE_INT_REGEX, 0);
+        regtxt = replace(regtxt, "$m", POSITIVE_INT_REGEX, 0);
         break;
       case Date:
         regorder[0] = strstr(text, "$Y");
@@ -658,11 +659,10 @@ int main(int argc, char** argv) {
 
     // Create datagroup arrays
     // TODO load datagroups from a file
-    size_t grpcnt = 2;
+    size_t grpcnt = 3;
     grp* dtgrps[grpcnt];
 
     // Create datagroup structures.
-
     grp vec3dg;
     dtgrps[0] = &vec3dg;
     vec3dg.tmfmt = Time;
@@ -689,57 +689,72 @@ int main(int argc, char** argv) {
     dataformat(&magic, "Magic $S");
     initdparray(&magic.dt, 32);
 
+    grp power;
+    dtgrps[2] = &power;
+    power.tmfmt = Epoch;
+    power.dtfmt = Float;
+    power.name = "Power";
+    power.timestr = (char*)malloc(sizeof(char)*4);
+    strcpy(power.timestr, "^$E");
+    timeformat(&power, power.timestr);
+    regexcompile(&power.idext, " Power ");
+    dataformat(&power, "Power $F");
+    initdparray(&power.dt, 32);
+
     // End Create datagroup structures.
 
     if (fnflag == 0) {
         printf("Please select a file using the -f tag\n");
         return 0;
-    } else {
-        // create an array of lines
-        char** lines = (char**)malloc(MAXLINES*sizeof(char*));
-        unsigned long int lncount = ldlog(filename, lines);
-        printf("Line count: %u\n", (unsigned int) lncount);
-        // loop through each line
-        for (int i = 0; i < lncount; i++) {
-            printf("%s",lines[i]);
-            // for every line, loop through every group
-            for (int j = 0; j < grpcnt; j++) {
-                int reti = regexexec(&dtgrps[j]->idext, lines[i]);
-                // check if the line belongs to the group
-                if (reti) {
-                    pt point;
-                    regmatch_t* matchptr = malloc(sizeof(regmatch_t)*8);
-                    if (dtgrps[j]->timestr[0] != '\0') {
-                        reti = regexec(&dtgrps[j]->timeext, lines[i], 8, matchptr, 0);
-                        // load the time from the line into the data structure
-                        if (!reti) {
-                            loadtm(lines[i], matchptr, dtgrps[j], &point);
-                        } else {
-                            printf("Time formatting error\n");
-                        }
-                    }
-                    free(matchptr);
-                    matchptr = malloc(sizeof(regmatch_t)*5);
-                    reti = regexec(&dtgrps[j]->dtext, lines[i], 5, matchptr, 0);
-                    // load the data from the line into the data structure
+    }
+
+    // create an array of lines
+    char** lines = (char**)malloc(MAXLINES*sizeof(char*));
+    unsigned long int lncount = ldlog(filename, lines);
+    printf("Line count: %u\n", (unsigned int) lncount);
+    // loop through each line
+    for (int i = 0; i < lncount; i++) {
+        printf("%s",lines[i]);
+        // for every line, loop through every group
+        for (int j = 0; j < grpcnt; j++) {
+            int reti = regexexec(&dtgrps[j]->idext, lines[i]);
+            // check if the line belongs to the group
+            if (reti) {
+                pt point;
+                regmatch_t* matchptr = malloc(sizeof(regmatch_t)*8);
+                if (dtgrps[j]->timestr[0] != '\0') {
+                    reti = regexec(&dtgrps[j]->timeext, lines[i], 8, matchptr, 0);
+                    // load the time from the line into the data structure
                     if (!reti) {
-                        loaddt(lines[i], matchptr, dtgrps[j], &point);
+                        loadtm(lines[i], matchptr, dtgrps[j], &point);
                     } else {
-                        printf("Data formatting error\n");
+                        printf("Time formatting error\n");
                     }
-                    // insert the datapoint into the array
-                    indparray(&dtgrps[j]->dt, point);
-                    
-                    free(matchptr);
                 }
+                free(matchptr);
+                matchptr = malloc(sizeof(regmatch_t)*5);
+                reti = regexec(&dtgrps[j]->dtext, lines[i], 5, matchptr, 0);
+                // load the data from the line into the data structure
+                if (!reti) {
+                    loaddt(lines[i], matchptr, dtgrps[j], &point);
+                } else {
+                    printf("Data formatting error\n");
+                }
+                // insert the datapoint into the array
+                indparray(&dtgrps[j]->dt, point);
+                
+                free(matchptr);
             }
-            free(lines[i]);
         }
-        free(lines);
+        free(lines[i]);
+    }
+    free(lines);
+
+    for (int i = 0; i < grpcnt; i++) {
+        printf("%s %d\n",dtgrps[i]->name, (int)dtgrps[i]->dt.used);
     }
 
     for (int i = 0; i < grpcnt; i++) {
-        printf("%d\n",(int)dtgrps[i]->dt.used);
         if (dtgrps[i]->timestr[0] != '\0')
             regfree(&dtgrps[i]->timeext);
         regfree(&dtgrps[i]->idext);
