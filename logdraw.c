@@ -7,6 +7,7 @@
 #include <regex.h>// keep in mind this is POSIX, and linux only
 #include "mergesort.h"
 #include "datapoint.h"
+#include "gtkUI.h"
 #include "draw.h"
 
 // TODO
@@ -708,6 +709,9 @@ int main(int argc, char** argv) {
         return 0;
     }
 
+    // start the UI
+    GtkApplication* app = UISetup();
+
     // create an array of lines
     char** lines = (char**)malloc(MAXLINES*sizeof(char*));
     unsigned long int lncount = ldlog(filename, lines);
@@ -763,8 +767,10 @@ int main(int argc, char** argv) {
         freedparray(&dtgrps[i]->dt);
     }
 
+    int status = UIStart(app);
+
     if (filename)
         free(filename);
 
-    return 0;
+    return status;
 }
