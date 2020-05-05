@@ -1,5 +1,17 @@
 #include "gtkUI.h"
 
+// Global variable! Living on the edge!
+// This is assigned once, in UISetup, and then only read from after that point
+// DO NOT write to outside of that function.
+struct lflines {
+    unsigned long int count;
+    char** lines;
+} loglines;
+struct dtname {
+    size_t count;
+    char** names;
+} datanames;
+
 static void print_hello(GtkWidget* widget, gpointer data) {
     g_print ("Hello World\n");
 }
@@ -87,13 +99,16 @@ void logScroll(GtkWidget* loglist) {
     gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(css),
             GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     gtk_css_provider_load_from_data(css,
-            ".data_btn {padding-top: 0px; padding-bottom: 0px; margin-bottom: -8px;}",
+            ".data_btn {padding-top: 0px; padding-bottom: 0px;\
+                        margin-bottom: -8px; font-family: monospace;}",
             -1, NULL);
     // TODO negative margins are bad and break when the theme changes.
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < loglines.count; i++) {
         GtkWidget* btn = gtk_button_new();
         GtkWidget* box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-        GtkWidget* text = gtk_label_new("Daga");
+        char* label = loglines.lines[i];
+        label[strlen(label)-1] = '\0';
+        GtkWidget* text = gtk_label_new(label);
 
         context = gtk_widget_get_style_context(btn);
         gtk_style_context_add_class(context, "data_btn");
@@ -105,11 +120,9 @@ void logScroll(GtkWidget* loglist) {
         gtk_box_pack_start(GTK_BOX(loglist), btn, FALSE, FALSE, 0);
     }
     g_object_unref(css);
-    GtkWidget* box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_box_pack_end(GTK_BOX(loglist), box, FALSE, FALSE, 0);
 }
 
-static void activate (GtkApplication* app, gpointer user_data)
+static void activate (GtkApplication* app, gpointer* user_data)
 {
     GtkWidget* window = gtk_application_window_new(app);
     GtkWidget* vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
@@ -123,6 +136,7 @@ static void activate (GtkApplication* app, gpointer user_data)
 
     GtkWidget* logbar = gtk_menu_bar_new();
     GtkWidget* logfileMi = new_mi("Logfile");
+    gtk_menu_shell_append(GTK_MENU_SHELL(logbar), logfileMi);
 
     // Log Screen
     GtkWidget* logscroll = gtk_scrolled_window_new(NULL, NULL);
@@ -136,13 +150,14 @@ static void activate (GtkApplication* app, gpointer user_data)
 
     GtkWidget* logMenu = gtk_menu_bar_new();
     GtkWidget* logAddMi = gtk_menu_item_new_with_label("+");
-    // TODO add these programatically
-    GtkWidget* log1Mi = gtk_menu_item_new_with_label("Log 1");
-    gtk_menu_shell_append(GTK_MENU_SHELL(logMenu), log1Mi);
-    GtkWidget* log2Mi = gtk_menu_item_new_with_label("Log 2");
-    gtk_menu_shell_append(GTK_MENU_SHELL(logMenu), log2Mi);
-    GtkWidget* log3Mi = gtk_menu_item_new_with_label("Log 3");
-    gtk_menu_shell_append(GTK_MENU_SHELL(logMenu), log3Mi);
+    for (int i = 0; i < datanames.count; i++) {
+        // right screen menu
+        GtkWidget* logMi = gtk_menu_item_new_with_label(datanames.names[i]);
+        gtk_menu_shell_append(GTK_MENU_SHELL(logMenu), logMi);
+        // top bar menu
+        GtkWidget* logTopMi = new_mi(datanames.names[i]);
+        gtk_menu_shell_append(GTK_MENU_SHELL(logbar), logTopMi);
+    }
 
     // Log
     GtkWidget* logFrame = gtk_frame_new(NULL);
@@ -164,7 +179,6 @@ static void activate (GtkApplication* app, gpointer user_data)
     g_signal_connect_swapped(quitMi, "activate", G_CALLBACK(gtk_widget_destroy), window);
 
     // Logfile Bar
-    gtk_menu_shell_append(GTK_MENU_SHELL(logbar), logfileMi);
     gtk_box_pack_start(GTK_BOX(vbox), logbar, FALSE, FALSE, 0);
 
     // Logfile Box
@@ -199,12 +213,23 @@ static void activate (GtkApplication* app, gpointer user_data)
     gtk_box_pack_start(GTK_BOX(logatrib), dataWidget(), TRUE, TRUE, 0);
 
     gtk_widget_show_all (window);
+
+    for (int i = 0; i < datanames.count; i++)
+        free(datanames.names[i]);
+    free(datanames.names);
 }
 
-GtkApplication* UISetup() {
+GtkApplication* UISetup(char** lines, unsigned long int lncount, size_t grpcnt, grp** dtgrps) {
+    loglines.lines = lines;
+    loglines.count = lncount;
+    datanames.count = grpcnt;
+    datanames.names = (char**)malloc(grpcnt*sizeof(char*));
+    for (int i = 0; i < grpcnt; i++) {
+        datanames.names[i] = (char*)malloc(strlen(dtgrps[i]->name)*sizeof(char*));
+        strcpy(datanames.names[i], dtgrps[i]->name);
+    }
     GtkApplication* app = gtk_application_new("org.gtk.example", G_APPLICATION_FLAGS_NONE);
     g_signal_connect(app, "activate", G_CALLBACK (activate), NULL);
-
     return app;
 }
 
@@ -215,13 +240,3 @@ int UIStart(GtkApplication* app) {
     g_object_unref (app);
     return status;
 }
-
-//int main(int argc, char** argv) {
-//    GtkApplication* app = UISetup();
-//
-//    printf("hello\n");
-//
-//    int status = UIStart(argc, argv, app);
-//
-//    return status;
-//}

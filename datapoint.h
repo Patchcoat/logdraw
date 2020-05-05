@@ -47,7 +47,6 @@ enum datafmt{
     ColorHex // 0 to FF
 };
 
-
 // time datapoint
 // if date is true, it's seconds from Jan 1, 1970. If it's false it's seconds
 // from the start of the day
@@ -74,6 +73,7 @@ typedef struct {
 // datagroup struct
 typedef struct {
     char* name; // name of the datagroup
+    char* idstr;
     unsigned int id;
     regex_t idext; // identifier extractor
     enum timefmt tmfmt;// time format
