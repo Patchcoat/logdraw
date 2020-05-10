@@ -1,0 +1,20 @@
+name:Vec3
+tmft:Time
+time:\[$H:$M:$S\]
+id:Vec3
+dtft:Vec3d
+data:($X,$Y,$Z)
+-
+name:Magic
+tmft:
+time:
+id:^Magic
+dtft:String
+data:Magic $S
+-
+name:Power
+tmft:Epoch
+time:^$E
+id: Power 
+dtft:Float
+data:Power $F
