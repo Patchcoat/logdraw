@@ -206,6 +206,33 @@ logdraw/fast:
 	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/build
 .PHONY : logdraw/fast
 
+draw.o: draw.c.o
+
+.PHONY : draw.o
+
+# target to build an object file
+draw.c.o:
+	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/draw.c.o
+.PHONY : draw.c.o
+
+draw.i: draw.c.i
+
+.PHONY : draw.i
+
+# target to preprocess a source file
+draw.c.i:
+	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/draw.c.i
+.PHONY : draw.c.i
+
+draw.s: draw.c.s
+
+.PHONY : draw.s
+
+# target to generate assembly for a file
+draw.c.s:
+	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/draw.c.s
+.PHONY : draw.c.s
+
 glad.o: glad.c.o
 
 .PHONY : glad.o
@@ -274,6 +301,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... glad"
 	@echo "... logdraw"
+	@echo "... draw.o"
+	@echo "... draw.i"
+	@echo "... draw.s"
 	@echo "... glad.o"
 	@echo "... glad.i"
 	@echo "... glad.s"

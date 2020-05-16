@@ -1,4 +1,4 @@
-add_executable(${CMAKE_PROJECT_NAME} logdraw.c)
+add_executable(${CMAKE_PROJECT_NAME} logdraw.c draw.c)
 add_library(glad glad.c)
 
 set(OpenGL_GL_PREFERENCE GLVND)

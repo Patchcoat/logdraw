@@ -12,6 +12,7 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 # Set build variables
 #--------------------------------------------------------------------
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
+set(CMAKE BUILD TYPE Debug)
 
 #--------------------------------------------------------------------
 # Include directories

@@ -1,1 +1,1 @@
-/usr/bin/cc   -rdynamic CMakeFiles/logdraw.dir/logdraw.c.o  -o ../bin/logdraw  libglad.a ../include/glfw-3.3/src/libglfw3.a -lrt -lm -ldl -lX11 -lpthread 
+/usr/bin/cc   -rdynamic CMakeFiles/logdraw.dir/logdraw.c.o CMakeFiles/logdraw.dir/draw.c.o  -o ../bin/logdraw  libglad.a ../include/glfw-3.3/src/libglfw3.a -lrt -lm -ldl -lX11 -lpthread 

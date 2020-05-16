@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "../bin/logdraw"
   "../bin/logdraw.pdb"
+  "CMakeFiles/logdraw.dir/draw.c.o"
   "CMakeFiles/logdraw.dir/logdraw.c.o"
 )
 

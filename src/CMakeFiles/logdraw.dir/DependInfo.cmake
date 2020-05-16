@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
+  "/home/c1user/Programming/logdraw/src/draw.c" "/home/c1user/Programming/logdraw/src/CMakeFiles/logdraw.dir/draw.c.o"
   "/home/c1user/Programming/logdraw/src/logdraw.c" "/home/c1user/Programming/logdraw/src/CMakeFiles/logdraw.dir/logdraw.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")

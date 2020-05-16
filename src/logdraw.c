@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <getopt.h>// command line options
 #include <string.h>
-#include <time.h>// datapoint time value
 #include <stdint.h>// uint32_t for defining color
-#include <regex.h>// keep in mind this is POSIX, and linux only
 #include "mergesort.h"
 #include "datapoint.h"
 //#include "gtkUI.h"
@@ -826,11 +824,11 @@ int main(int argc, char** argv) {
     grp* dtgrps = readconfig(filename, &grpcnt);
    
     //check grpcnt
-    for (int i = 0; i < grpcnt; i++) {
-        printf("Name: %s\n",dtgrps[i].name);
-        printf("Time: %s\n", dtgrps[i].timestr);
-        printf("Data: %s\n", dtgrps[i].dtstr);
-    }
+    //for (int i = 0; i < grpcnt; i++) {
+    //    printf("Name: %s\n",dtgrps[i].name);
+    //    printf("Time: %s\n", dtgrps[i].timestr);
+    //    printf("Data: %s\n", dtgrps[i].dtstr);
+    //}
 
     // TODO load datagroups from a file
     //size_t grpcnt = 3;
@@ -938,11 +936,11 @@ int main(int argc, char** argv) {
         }
     }
 
-
     for (int i = 0; i < grpcnt; i++) {
         //printf("%s %d\n",dtgrps[i]->name, (int)dtgrps[i]->dt.used);
     }
 
+    drawDtLine(&dtgrps[0]);
     //GtkApplication* app = UISetup(lines, lncount, grpcnt, dtgrps);
     //int status = UIStart(app);
 

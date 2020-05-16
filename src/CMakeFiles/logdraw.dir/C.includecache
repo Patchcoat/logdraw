@@ -7,36 +7,36 @@
 #IncludeRegexTransform: 
 
 /home/c1user/Programming/logdraw/src/datapoint.h
+time.h
+-
+regex.h
+-
+
+/home/c1user/Programming/logdraw/src/draw.c
+stdio.h
+-
+draw.h
+/home/c1user/Programming/logdraw/src/draw.h
 
 /home/c1user/Programming/logdraw/src/draw.h
+glad/glad.h
+-
 GLFW/glfw3.h
 -
 datapoint.h
 /home/c1user/Programming/logdraw/src/datapoint.h
 
-/home/c1user/Programming/logdraw/src/logdraw.c
-stdio.h
+include/KHR/khrplatform.h
+stdint.h
 -
-stdlib.h
--
-getopt.h
--
-string.h
--
-time.h
+inttypes.h
 -
 stdint.h
 -
-regex.h
--
-mergesort.h
-/home/c1user/Programming/logdraw/src/mergesort.h
-datapoint.h
-/home/c1user/Programming/logdraw/src/datapoint.h
-draw.h
-/home/c1user/Programming/logdraw/src/draw.h
 
-/home/c1user/Programming/logdraw/src/mergesort.h
+include/glad/glad.h
+KHR/khrplatform.h
+-
 
 include/glfw-3.3/include/GLFW/glfw3.h
 stddef.h
