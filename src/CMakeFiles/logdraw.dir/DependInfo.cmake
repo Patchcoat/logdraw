@@ -1,18 +1,19 @@
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
-  "C"
+  "CXX"
   )
 # The set of files for implicit dependencies of each language:
-set(CMAKE_DEPENDS_CHECK_C
-  "/home/c1user/Programming/logdraw/src/draw.c" "/home/c1user/Programming/logdraw/src/CMakeFiles/logdraw.dir/draw.c.o"
-  "/home/c1user/Programming/logdraw/src/logdraw.c" "/home/c1user/Programming/logdraw/src/CMakeFiles/logdraw.dir/logdraw.c.o"
+set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/c1user/Programming/logdraw/src/draw.cpp" "/home/c1user/Programming/logdraw/src/CMakeFiles/logdraw.dir/draw.cpp.o"
+  "/home/c1user/Programming/logdraw/src/logdraw.cpp" "/home/c1user/Programming/logdraw/src/CMakeFiles/logdraw.dir/logdraw.cpp.o"
   )
-set(CMAKE_C_COMPILER_ID "GNU")
+set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
-set(CMAKE_C_TARGET_INCLUDE_PATH
+set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "include"
   "src"
+  "include/glm"
   "include/glfw-3.3/include"
   )
 

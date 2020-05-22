@@ -77,42 +77,42 @@ include src/CMakeFiles/logdraw.dir/progress.make
 # Include the compile flags for this target's objects.
 include src/CMakeFiles/logdraw.dir/flags.make
 
-src/CMakeFiles/logdraw.dir/logdraw.c.o: src/CMakeFiles/logdraw.dir/flags.make
-src/CMakeFiles/logdraw.dir/logdraw.c.o: src/logdraw.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/c1user/Programming/logdraw/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object src/CMakeFiles/logdraw.dir/logdraw.c.o"
-	cd /home/c1user/Programming/logdraw/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/logdraw.dir/logdraw.c.o   -c /home/c1user/Programming/logdraw/src/logdraw.c
+src/CMakeFiles/logdraw.dir/logdraw.cpp.o: src/CMakeFiles/logdraw.dir/flags.make
+src/CMakeFiles/logdraw.dir/logdraw.cpp.o: src/logdraw.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/c1user/Programming/logdraw/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/logdraw.dir/logdraw.cpp.o"
+	cd /home/c1user/Programming/logdraw/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/logdraw.dir/logdraw.cpp.o -c /home/c1user/Programming/logdraw/src/logdraw.cpp
 
-src/CMakeFiles/logdraw.dir/logdraw.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/logdraw.dir/logdraw.c.i"
-	cd /home/c1user/Programming/logdraw/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/c1user/Programming/logdraw/src/logdraw.c > CMakeFiles/logdraw.dir/logdraw.c.i
+src/CMakeFiles/logdraw.dir/logdraw.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/logdraw.dir/logdraw.cpp.i"
+	cd /home/c1user/Programming/logdraw/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/c1user/Programming/logdraw/src/logdraw.cpp > CMakeFiles/logdraw.dir/logdraw.cpp.i
 
-src/CMakeFiles/logdraw.dir/logdraw.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/logdraw.dir/logdraw.c.s"
-	cd /home/c1user/Programming/logdraw/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/c1user/Programming/logdraw/src/logdraw.c -o CMakeFiles/logdraw.dir/logdraw.c.s
+src/CMakeFiles/logdraw.dir/logdraw.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/logdraw.dir/logdraw.cpp.s"
+	cd /home/c1user/Programming/logdraw/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/c1user/Programming/logdraw/src/logdraw.cpp -o CMakeFiles/logdraw.dir/logdraw.cpp.s
 
-src/CMakeFiles/logdraw.dir/draw.c.o: src/CMakeFiles/logdraw.dir/flags.make
-src/CMakeFiles/logdraw.dir/draw.c.o: src/draw.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/c1user/Programming/logdraw/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object src/CMakeFiles/logdraw.dir/draw.c.o"
-	cd /home/c1user/Programming/logdraw/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/logdraw.dir/draw.c.o   -c /home/c1user/Programming/logdraw/src/draw.c
+src/CMakeFiles/logdraw.dir/draw.cpp.o: src/CMakeFiles/logdraw.dir/flags.make
+src/CMakeFiles/logdraw.dir/draw.cpp.o: src/draw.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/c1user/Programming/logdraw/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/CMakeFiles/logdraw.dir/draw.cpp.o"
+	cd /home/c1user/Programming/logdraw/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/logdraw.dir/draw.cpp.o -c /home/c1user/Programming/logdraw/src/draw.cpp
 
-src/CMakeFiles/logdraw.dir/draw.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/logdraw.dir/draw.c.i"
-	cd /home/c1user/Programming/logdraw/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/c1user/Programming/logdraw/src/draw.c > CMakeFiles/logdraw.dir/draw.c.i
+src/CMakeFiles/logdraw.dir/draw.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/logdraw.dir/draw.cpp.i"
+	cd /home/c1user/Programming/logdraw/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/c1user/Programming/logdraw/src/draw.cpp > CMakeFiles/logdraw.dir/draw.cpp.i
 
-src/CMakeFiles/logdraw.dir/draw.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/logdraw.dir/draw.c.s"
-	cd /home/c1user/Programming/logdraw/src && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/c1user/Programming/logdraw/src/draw.c -o CMakeFiles/logdraw.dir/draw.c.s
+src/CMakeFiles/logdraw.dir/draw.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/logdraw.dir/draw.cpp.s"
+	cd /home/c1user/Programming/logdraw/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/c1user/Programming/logdraw/src/draw.cpp -o CMakeFiles/logdraw.dir/draw.cpp.s
 
 # Object files for target logdraw
 logdraw_OBJECTS = \
-"CMakeFiles/logdraw.dir/logdraw.c.o" \
-"CMakeFiles/logdraw.dir/draw.c.o"
+"CMakeFiles/logdraw.dir/logdraw.cpp.o" \
+"CMakeFiles/logdraw.dir/draw.cpp.o"
 
 # External object files for target logdraw
 logdraw_EXTERNAL_OBJECTS =
 
-bin/logdraw: src/CMakeFiles/logdraw.dir/logdraw.c.o
-bin/logdraw: src/CMakeFiles/logdraw.dir/draw.c.o
+bin/logdraw: src/CMakeFiles/logdraw.dir/logdraw.cpp.o
+bin/logdraw: src/CMakeFiles/logdraw.dir/draw.cpp.o
 bin/logdraw: src/CMakeFiles/logdraw.dir/build.make
 bin/logdraw: src/libglad.a
 bin/logdraw: include/glfw-3.3/src/libglfw3.a
@@ -120,7 +120,7 @@ bin/logdraw: /usr/lib/librt.so
 bin/logdraw: /usr/lib/libm.so
 bin/logdraw: /usr/lib/libX11.so
 bin/logdraw: src/CMakeFiles/logdraw.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/c1user/Programming/logdraw/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable ../bin/logdraw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/c1user/Programming/logdraw/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable ../bin/logdraw"
 	cd /home/c1user/Programming/logdraw/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/logdraw.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

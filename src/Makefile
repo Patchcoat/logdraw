@@ -206,32 +206,32 @@ logdraw/fast:
 	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/build
 .PHONY : logdraw/fast
 
-draw.o: draw.c.o
+draw.o: draw.cpp.o
 
 .PHONY : draw.o
 
 # target to build an object file
-draw.c.o:
-	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/draw.c.o
-.PHONY : draw.c.o
+draw.cpp.o:
+	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/draw.cpp.o
+.PHONY : draw.cpp.o
 
-draw.i: draw.c.i
+draw.i: draw.cpp.i
 
 .PHONY : draw.i
 
 # target to preprocess a source file
-draw.c.i:
-	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/draw.c.i
-.PHONY : draw.c.i
+draw.cpp.i:
+	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/draw.cpp.i
+.PHONY : draw.cpp.i
 
-draw.s: draw.c.s
+draw.s: draw.cpp.s
 
 .PHONY : draw.s
 
 # target to generate assembly for a file
-draw.c.s:
-	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/draw.c.s
-.PHONY : draw.c.s
+draw.cpp.s:
+	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/draw.cpp.s
+.PHONY : draw.cpp.s
 
 glad.o: glad.c.o
 
@@ -260,32 +260,32 @@ glad.c.s:
 	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/glad.dir/build.make src/CMakeFiles/glad.dir/glad.c.s
 .PHONY : glad.c.s
 
-logdraw.o: logdraw.c.o
+logdraw.o: logdraw.cpp.o
 
 .PHONY : logdraw.o
 
 # target to build an object file
-logdraw.c.o:
-	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/logdraw.c.o
-.PHONY : logdraw.c.o
+logdraw.cpp.o:
+	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/logdraw.cpp.o
+.PHONY : logdraw.cpp.o
 
-logdraw.i: logdraw.c.i
+logdraw.i: logdraw.cpp.i
 
 .PHONY : logdraw.i
 
 # target to preprocess a source file
-logdraw.c.i:
-	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/logdraw.c.i
-.PHONY : logdraw.c.i
+logdraw.cpp.i:
+	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/logdraw.cpp.i
+.PHONY : logdraw.cpp.i
 
-logdraw.s: logdraw.c.s
+logdraw.s: logdraw.cpp.s
 
 .PHONY : logdraw.s
 
 # target to generate assembly for a file
-logdraw.c.s:
-	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/logdraw.c.s
-.PHONY : logdraw.c.s
+logdraw.cpp.s:
+	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/logdraw.cpp.s
+.PHONY : logdraw.cpp.s
 
 # Help Target
 help:

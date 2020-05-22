@@ -203,6 +203,19 @@ glfw/fast:
 .PHONY : glfw/fast
 
 #=============================================================================
+# Target rules for targets named glm_static
+
+# Build rule for target.
+glm_static: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 glm_static
+.PHONY : glm_static
+
+# fast build rule for target.
+glm_static/fast:
+	$(MAKE) $(MAKESILENT) -f include/glm/glm/CMakeFiles/glm_static.dir/build.make include/glm/glm/CMakeFiles/glm_static.dir/build
+.PHONY : glm_static/fast
+
+#=============================================================================
 # Target rules for targets named glad
 
 # Build rule for target.
@@ -243,6 +256,7 @@ help:
 	@echo "... uninstall"
 	@echo "... glad"
 	@echo "... glfw"
+	@echo "... glm_static"
 	@echo "... logdraw"
 .PHONY : help
 

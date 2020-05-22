@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.1)
 project(logdraw)
 
+set(CMAKE_CXX_STANDARD 11)
+
 #--------------------------------------------------------------------
 # Set GLFW variables
 #--------------------------------------------------------------------
@@ -24,4 +26,5 @@ include_directories(src)
 # Add subdirectories
 #--------------------------------------------------------------------
 add_subdirectory(include/glfw-3.3)
+add_subdirectory(include/glm)
 add_subdirectory(src)

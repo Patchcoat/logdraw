@@ -14,8 +14,11 @@
 # EXTERNAL cache entries
 ########################
 
-//Build shared libraries
+//Build shared library
 BUILD_SHARED_LIBS:BOOL=OFF
+
+//Build static library
+BUILD_STATIC_LIBS:BOOL=ON
 
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=/usr/bin/addr2line
@@ -198,6 +201,21 @@ CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 //Value Computed by CMake
 CMAKE_PROJECT_NAME:STATIC=logdraw
 
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION:STATIC=0.9.9
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_MAJOR:STATIC=0
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_MINOR:STATIC=9
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_PATCH:STATIC=9
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_TWEAK:STATIC=
+
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
 
@@ -304,6 +322,63 @@ GLFW_USE_WAYLAND:BOOL=OFF
 
 //Assume the Vulkan loader is linked with the application
 GLFW_VULKAN_STATIC:BOOL=OFF
+
+//The directory containing a CMake configuration file for GLM.
+GLM_DIR:PATH=GLM_DIR-NOTFOUND
+
+//Enable language extensions
+GLM_DISABLE_AUTO_DETECTION:BOOL=OFF
+
+//No CMake Message
+GLM_QUIET:BOOL=OFF
+
+//Build unit tests
+GLM_TEST_ENABLE:BOOL=ON
+
+//Enable C++ 11
+GLM_TEST_ENABLE_CXX_11:BOOL=OFF
+
+//Enable C++ 14
+GLM_TEST_ENABLE_CXX_14:BOOL=OFF
+
+//Enable C++ 17
+GLM_TEST_ENABLE_CXX_17:BOOL=OFF
+
+//Enable C++ 20
+GLM_TEST_ENABLE_CXX_20:BOOL=OFF
+
+//Enable C++ 98
+GLM_TEST_ENABLE_CXX_98:BOOL=OFF
+
+//Enable fast math optimizations
+GLM_TEST_ENABLE_FAST_MATH:BOOL=OFF
+
+//Enable language extensions
+GLM_TEST_ENABLE_LANG_EXTENSIONS:BOOL=OFF
+
+//Enable AVX optimizations
+GLM_TEST_ENABLE_SIMD_AVX:BOOL=OFF
+
+//Enable AVX2 optimizations
+GLM_TEST_ENABLE_SIMD_AVX2:BOOL=OFF
+
+//Enable SSE2 optimizations
+GLM_TEST_ENABLE_SIMD_SSE2:BOOL=OFF
+
+//Enable SSE3 optimizations
+GLM_TEST_ENABLE_SIMD_SSE3:BOOL=OFF
+
+//Enable SSE 4.1 optimizations
+GLM_TEST_ENABLE_SIMD_SSE4_1:BOOL=OFF
+
+//Enable SSE 4.2 optimizations
+GLM_TEST_ENABLE_SIMD_SSE4_2:BOOL=OFF
+
+//Enable SSSE3 optimizations
+GLM_TEST_ENABLE_SIMD_SSSE3:BOOL=OFF
+
+//Force 'pure' instructions
+GLM_TEST_FORCE_PURE:BOOL=OFF
 
 //Path to a library.
 MATH_LIBRARY:FILEPATH=/usr/lib/libm.so
@@ -519,6 +594,15 @@ X11_xkbfile_INCLUDE_PATH:PATH=/usr/include
 X11_xkbfile_LIB:FILEPATH=/usr/lib/libxkbfile.so
 
 //Value Computed by CMake
+glm_BINARY_DIR:STATIC=/home/c1user/Programming/logdraw/include/glm
+
+//The directory containing a CMake configuration file for glm.
+glm_DIR:PATH=/usr/lib64/cmake/glm
+
+//Value Computed by CMake
+glm_SOURCE_DIR:STATIC=/home/c1user/Programming/logdraw/include/glm
+
+//Value Computed by CMake
 logdraw_BINARY_DIR:STATIC=/home/c1user/Programming/logdraw
 
 //Value Computed by CMake
@@ -687,7 +771,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=4
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=6
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

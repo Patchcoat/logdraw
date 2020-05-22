@@ -40,6 +40,7 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/c1user/Programming/logdraw/include/glfw-3.3/cmake_install.cmake")
+  include("/home/c1user/Programming/logdraw/include/glm/cmake_install.cmake")
   include("/home/c1user/Programming/logdraw/src/cmake_install.cmake")
 
 endif()

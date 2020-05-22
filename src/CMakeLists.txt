@@ -1,4 +1,4 @@
-add_executable(${CMAKE_PROJECT_NAME} logdraw.c draw.c)
+add_executable(${CMAKE_PROJECT_NAME} logdraw.cpp draw.cpp)
 add_library(glad glad.c)
 
 set(OpenGL_GL_PREFERENCE GLVND)
@@ -10,4 +10,5 @@ if (OPENGL_FOUND)
 endif()
 
 target_link_libraries(${CMAKE_PROJECT_NAME} glad)
+target_link_libraries(${CMAKE_PROJECT_NAME} glm)
 target_link_libraries(${CMAKE_PROJECT_NAME} glfw)
