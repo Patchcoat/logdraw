@@ -952,7 +952,7 @@ int main(int argc, char** argv) {
         //printf("%s %d\n",dtgrps[i]->name, (int)dtgrps[i]->dt.used);
     }
 
-    drawDtLine(&dtgrps[0]);
+    drawDt3dLine(&dtgrps[0]);
     //GtkApplication* app = UISetup(lines, lncount, grpcnt, dtgrps);
     //int status = UIStart(app);
 
