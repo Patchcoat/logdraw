@@ -5,7 +5,7 @@
 #include <stdint.h>// uint32_t for defining color
 #include "mergesort.h"
 #include "datapoint.h"
-//#include "gtkUI.h"
+#include "gtkUI.h"
 #include "draw.h"
 
 // TODO
@@ -952,9 +952,9 @@ int main(int argc, char** argv) {
         //printf("%s %d\n",dtgrps[i]->name, (int)dtgrps[i]->dt.used);
     }
 
-    drawDt3dLine(&dtgrps[0]);
-    //GtkApplication* app = UISetup(lines, lncount, grpcnt, dtgrps);
-    //int status = UIStart(app);
+    //drawDt3dLine(&dtgrps[0]);
+    GtkApplication* app = UISetup(lines, lncount, grpcnt, &dtgrps);
+    int status = UIStart(app);
 
     for (int i = 0; i < lncount; i++)
         free(lines[i]);

@@ -12,14 +12,10 @@ struct dtname {
     char** names;
 } datanames;
 
-static void print_hello(GtkWidget* widget, gpointer data) {
-    g_print ("Hello World\n");
-}
-
-GtkWidget* new_mi(char* label) {
-    GtkWidget* new;
-    new = gtk_menu_item_new_with_label(label);
-    return new;
+GtkWidget* new_mi(const char* label) {
+    GtkWidget* newmi;
+    newmi = gtk_menu_item_new_with_label(label);
+    return newmi;
 }
 
 GtkWidget* labelWidget() {

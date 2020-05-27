@@ -17,10 +17,18 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
 set(CMAKE BUILD TYPE Debug)
 
 #--------------------------------------------------------------------
+# Set build variables
+#--------------------------------------------------------------------
+find_package (PkgConfig REQUIRED)
+pkg_check_modules (GTK3 REQUIRED gtk+-3.0)
+
+#--------------------------------------------------------------------
 # Include directories
 #--------------------------------------------------------------------
 include_directories(include)
 include_directories(src)
+include_directories(${GTK3_INCLUDE_DIRS})
+link_directories(${GTK3_LIBRARY_DIRS})
 
 #--------------------------------------------------------------------
 # Add subdirectories

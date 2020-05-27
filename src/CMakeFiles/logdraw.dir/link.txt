@@ -1,1 +1,1 @@
-/usr/bin/c++    -rdynamic CMakeFiles/logdraw.dir/logdraw.cpp.o CMakeFiles/logdraw.dir/draw.cpp.o  -o ../bin/logdraw  libglad.a ../include/glfw-3.3/src/libglfw3.a -lrt -lm -ldl -lX11 -lpthread 
+/usr/bin/c++    -rdynamic CMakeFiles/logdraw.dir/logdraw.cpp.o CMakeFiles/logdraw.dir/draw.cpp.o CMakeFiles/logdraw.dir/gtkUI.cpp.o  -o ../bin/logdraw  libglad.a ../include/glfw-3.3/src/libglfw3.a -lgtk-3 -lgdk-3 -lz -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lrt -lm -ldl -lX11 -lpthread 

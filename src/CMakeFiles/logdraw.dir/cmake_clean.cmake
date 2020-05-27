@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "../bin/logdraw"
   "../bin/logdraw.pdb"
   "CMakeFiles/logdraw.dir/draw.cpp.o"
+  "CMakeFiles/logdraw.dir/gtkUI.cpp.o"
   "CMakeFiles/logdraw.dir/logdraw.cpp.o"
 )
 

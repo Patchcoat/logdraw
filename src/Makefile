@@ -260,6 +260,33 @@ glad.c.s:
 	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/glad.dir/build.make src/CMakeFiles/glad.dir/glad.c.s
 .PHONY : glad.c.s
 
+gtkUI.o: gtkUI.cpp.o
+
+.PHONY : gtkUI.o
+
+# target to build an object file
+gtkUI.cpp.o:
+	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/gtkUI.cpp.o
+.PHONY : gtkUI.cpp.o
+
+gtkUI.i: gtkUI.cpp.i
+
+.PHONY : gtkUI.i
+
+# target to preprocess a source file
+gtkUI.cpp.i:
+	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/gtkUI.cpp.i
+.PHONY : gtkUI.cpp.i
+
+gtkUI.s: gtkUI.cpp.s
+
+.PHONY : gtkUI.s
+
+# target to generate assembly for a file
+gtkUI.cpp.s:
+	cd /home/c1user/Programming/logdraw && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/gtkUI.cpp.s
+.PHONY : gtkUI.cpp.s
+
 logdraw.o: logdraw.cpp.o
 
 .PHONY : logdraw.o
@@ -307,6 +334,9 @@ help:
 	@echo "... glad.o"
 	@echo "... glad.i"
 	@echo "... glad.s"
+	@echo "... gtkUI.o"
+	@echo "... gtkUI.i"
+	@echo "... gtkUI.s"
 	@echo "... logdraw.o"
 	@echo "... logdraw.i"
 	@echo "... logdraw.s"

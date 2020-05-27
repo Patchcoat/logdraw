@@ -302,12 +302,12 @@ src/CMakeFiles/logdraw.dir/all: include/glfw-3.3/src/CMakeFiles/glfw.dir/all
 src/CMakeFiles/logdraw.dir/all: src/CMakeFiles/glad.dir/all
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/depend
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/logdraw.dir/build.make src/CMakeFiles/logdraw.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/c1user/Programming/logdraw/CMakeFiles --progress-num=22,23,24 "Built target logdraw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/c1user/Programming/logdraw/CMakeFiles --progress-num=22,23,24,25 "Built target logdraw"
 .PHONY : src/CMakeFiles/logdraw.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/logdraw.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/c1user/Programming/logdraw/CMakeFiles 22
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/c1user/Programming/logdraw/CMakeFiles 23
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/logdraw.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/c1user/Programming/logdraw/CMakeFiles 0
 .PHONY : src/CMakeFiles/logdraw.dir/rule
