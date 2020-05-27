@@ -220,9 +220,7 @@ GtkApplication* UISetup(char** lines, unsigned long int lncount, size_t grpcnt, 
     loglines.count = lncount;
     datanames.count = grpcnt;
     datanames.names = (char**)malloc(grpcnt*sizeof(char*));
-    printf("Count: %i\n", grpcnt);
     for (int i = 0; i < grpcnt; i++) {
-        printf("i: %i\n", i);
         datanames.names[i] = (char*)malloc(strlen(dtgrps[i].name)*sizeof(char*));
         strcpy(datanames.names[i], dtgrps[i].name);
     }
