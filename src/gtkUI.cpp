@@ -215,14 +215,16 @@ static void activate (GtkApplication* app, gpointer* user_data)
     free(datanames.names);
 }
 
-GtkApplication* UISetup(char** lines, unsigned long int lncount, size_t grpcnt, grp** dtgrps) {
+GtkApplication* UISetup(char** lines, unsigned long int lncount, size_t grpcnt, grp* dtgrps) {
     loglines.lines = lines;
     loglines.count = lncount;
     datanames.count = grpcnt;
     datanames.names = (char**)malloc(grpcnt*sizeof(char*));
+    printf("Count: %i\n", grpcnt);
     for (int i = 0; i < grpcnt; i++) {
-        datanames.names[i] = (char*)malloc(strlen(dtgrps[i]->name)*sizeof(char*));
-        strcpy(datanames.names[i], dtgrps[i]->name);
+        printf("i: %i\n", i);
+        datanames.names[i] = (char*)malloc(strlen(dtgrps[i].name)*sizeof(char*));
+        strcpy(datanames.names[i], dtgrps[i].name);
     }
     GtkApplication* app = gtk_application_new("org.gtk.example", G_APPLICATION_FLAGS_NONE);
     g_signal_connect(app, "activate", G_CALLBACK (activate), NULL);

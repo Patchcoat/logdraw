@@ -953,7 +953,7 @@ int main(int argc, char** argv) {
     }
 
     //drawDt3dLine(&dtgrps[0]);
-    GtkApplication* app = UISetup(lines, lncount, grpcnt, &dtgrps);
+    GtkApplication* app = UISetup(lines, lncount, grpcnt, dtgrps);
     int status = UIStart(app);
 
     for (int i = 0; i < lncount; i++)

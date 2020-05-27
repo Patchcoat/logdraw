@@ -5,7 +5,7 @@
 #include "datapoint.h"
 
 
-GtkApplication* UISetup(char** lines, unsigned long int lncount, size_t grpcnt, grp** dtgrps);
+GtkApplication* UISetup(char** lines, unsigned long int lncount, size_t grpcnt, grp* dtgrps);
 int UIStart(GtkApplication* app);
 void logScrollSetup(GtkCssProvider* css);
 void logScrollInsert(GtkCssProvider* css, GtkWidget* loglist, char* line);
