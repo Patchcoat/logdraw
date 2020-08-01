@@ -760,7 +760,7 @@ grp* readconfig(char* filein, size_t *grpcnt) {
 
 int main(int argc, char** argv) {
     int c;
-    char* filename;
+    char* filename = NULL;
     int fnflag = 0;// filename flag
 
     // read command line options
@@ -818,21 +818,27 @@ int main(int argc, char** argv) {
         putchar ('\n');
     }
 
+    // check if a file was included in the command line arguments
+    bool file = filename != NULL;
+    
     // Create datagroup arrays
-    size_t grpcnt;
-    grp* dtgrps = readconfig(filename, &grpcnt);
-
-    // End Create datagroup structures.
+    size_t grpcnt = 0;
+    grp* dtgrps = NULL;
+    if (file) {
+        dtgrps = readconfig(filename, &grpcnt);
+    }
 
     if (fnflag == 0) {
         printf("Please select a file using the -f tag\n");
-        return 0;
+        //return 0;
     }
 
     // create an array of logfile lines
-
     char** lines = (char**)malloc(MAXLINES*sizeof(char*));
-    unsigned long int lncount = ldlog(filename, lines);
+    unsigned long int lncount = 0;
+    if (file) {
+        lncount = ldlog(filename, lines);
+    }
     printf("Line count: %u\n", (unsigned int) lncount);
     // loop through each line
     for (int i = 0; i < lncount; i++) {
@@ -893,7 +899,8 @@ int main(int argc, char** argv) {
         free(dtgrps[i].idstr);
         freedparray(&dtgrps[i].dt);
     }
-    free(dtgrps);
+    if (dtgrps != NULL)
+        free(dtgrps);
 
     if (filename)
         free(filename);

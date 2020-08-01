@@ -26,16 +26,6 @@ glm/gtc/type_ptr.hpp
 datapoint.h
 /home/c1user/Programming/logdraw/src/datapoint.h
 
-/home/c1user/Programming/logdraw/src/gtkUI.cpp
-gtkUI.h
-/home/c1user/Programming/logdraw/src/gtkUI.h
-draw.h
-/home/c1user/Programming/logdraw/src/draw.h
-string
--
-pthread.h
--
-
 /home/c1user/Programming/logdraw/src/gtkUI.h
 gtk/gtk.h
 -
@@ -43,6 +33,28 @@ regex.h
 -
 datapoint.h
 /home/c1user/Programming/logdraw/src/datapoint.h
+
+/home/c1user/Programming/logdraw/src/logdraw.cpp
+stdio.h
+-
+stdlib.h
+-
+getopt.h
+-
+string.h
+-
+stdint.h
+-
+mergesort.h
+/home/c1user/Programming/logdraw/src/mergesort.h
+datapoint.h
+/home/c1user/Programming/logdraw/src/datapoint.h
+gtkUI.h
+/home/c1user/Programming/logdraw/src/gtkUI.h
+draw.h
+/home/c1user/Programming/logdraw/src/draw.h
+
+/home/c1user/Programming/logdraw/src/mergesort.h
 
 /usr/include/atk-1.0/atk/atk-enum-types.h
 atk/atkversion.h

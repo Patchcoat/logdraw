@@ -292,7 +292,6 @@ void standardView (GtkWidget* vbox) {
     for (int i = 0; i < datanames.count; i++)
         free(datanames.names[i]);
     free(datanames.names);
-
 }
 
 static void activate (GtkApplication* app, gpointer* user_data) {
