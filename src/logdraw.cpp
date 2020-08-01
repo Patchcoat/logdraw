@@ -907,7 +907,8 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    // create an array of lines
+    // create an array of logfile lines
+
     char** lines = (char**)malloc(MAXLINES*sizeof(char*));
     unsigned long int lncount = ldlog(filename, lines);
     printf("Line count: %u\n", (unsigned int) lncount);
