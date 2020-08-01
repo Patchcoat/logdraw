@@ -753,19 +753,6 @@ grp* readconfig(char* filein, size_t *grpcnt) {
         free(line);
 
     free(filename);
-    
-    //for (int i = 0; i <= grpnum; i++) {
-    //    if (dtgrps[i].timestr[0] != '\0')
-    //        regfree(&dtgrps[i].timeext);
-    //    regfree(&dtgrps[i].idext);
-    //    regfree(&dtgrps[i].dtext);
-    //    free(dtgrps[i].name);
-    //    free(dtgrps[i].timestr);
-    //    free(dtgrps[i].dtstr);
-    //    free(dtgrps[i].idstr);
-    //    //freedparray(&dtgrps[i]->dt);
-    //}
-    //free(dtgrps);
 
     *grpcnt = grpnum+1;
     return dtgrps;
@@ -834,71 +821,6 @@ int main(int argc, char** argv) {
     // Create datagroup arrays
     size_t grpcnt;
     grp* dtgrps = readconfig(filename, &grpcnt);
-   
-    //check grpcnt
-    //for (int i = 0; i < grpcnt; i++) {
-    //    printf("Name: %s\n",dtgrps[i].name);
-    //    printf("Time: %s\n", dtgrps[i].timestr);
-    //    printf("Data: %s\n", dtgrps[i].dtstr);
-    //}
-
-    // TODO load datagroups from a file
-    //size_t grpcnt = 3;
-    //grp dtgrps[grpcnt];
-
-    /*
-    // Create datagroup structures.
-    grp vec3dg;
-    vec3dg.tmfmt = Time;
-    vec3dg.dtfmt = Vec3d;
-    vec3dg.name = "Vec3";
-    vec3dg.timestr = (char*)malloc(sizeof(char)*15);
-    strcpy(vec3dg.timestr, "\\[$H:$M:$S\\]");
-    timeformat(&vec3dg);
-    vec3dg.idstr = (char*)malloc(sizeof(char)*5);
-    strcpy(vec3dg.idstr, "Vec3");
-    regexcompile(&vec3dg.idext, vec3dg.idstr);
-    vec3dg.dtstr = (char*)malloc(sizeof(char)*11);
-    strcpy(vec3dg.dtstr, "($X,$Y,$Z)");
-    dataformat(&vec3dg);
-    initdparray(&vec3dg.dt, 32);// TODO figure out a good starting size
-    dtgrps[0] = vec3dg;
-    // Here's an idea. init the arrays at the beginning of the data groups for loop
-    // Assume that each data group takes up about the same space, so divide the
-    // lncount by the grpcnt and get the size of the init datapoint array
-    grp magic;
-    magic.tmfmt = Epoch;
-    magic.dtfmt = String;
-    magic.name = "Magic";
-    magic.timestr = (char*)malloc(sizeof(char)*1);
-    strcpy(magic.timestr, "");
-    timeformat(&magic);
-    magic.idstr = (char*)malloc(sizeof(char)*7);
-    strcpy(magic.idstr, "^Magic");
-    regexcompile(&magic.idext, magic.idstr);
-    magic.dtstr = (char*)malloc(sizeof(char)*9);
-    strcpy(magic.dtstr, "Magic $S");
-    dataformat(&magic);
-    initdparray(&magic.dt, 32);
-    dtgrps[1] = magic;
-
-    grp power;
-    power.tmfmt = Epoch;
-    power.dtfmt = Float;
-    power.name = "Power";
-    power.timestr = (char*)malloc(sizeof(char)*4);
-    strcpy(power.timestr, "^$E");
-    timeformat(&power);
-    power.idstr = (char*)malloc(sizeof(char)*8);
-    strcpy(power.idstr, " Power ");
-    regexcompile(&power.idext, power.idstr);
-    power.dtstr = (char*)malloc(sizeof(char)*9);
-    strcpy(power.dtstr, "Power $F");
-    dataformat(&power);
-    initdparray(&power.dt, 32);
-    dtgrps[2] = power;
-    */
-    
 
     // End Create datagroup structures.
 
@@ -949,11 +871,10 @@ int main(int argc, char** argv) {
         }
     }
 
-    for (int i = 0; i < grpcnt; i++) {
-        //printf("%s %d\n",dtgrps[i]->name, (int)dtgrps[i]->dt.used);
-    }
+    /*for (int i = 0; i < grpcnt; i++) {
+        printf("%s %d\n",dtgrps[i]->name, (int)dtgrps[i]->dt.used);
+    }*/
 
-    //drawDt3dLine(&dtgrps[0]);
     GtkApplication* app = UISetup(lines, lncount, grpcnt, dtgrps);
     int status = UIStart(app);
 

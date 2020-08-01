@@ -172,9 +172,7 @@ void logScroll(GtkWidget* loglist) {
 
 void helpMenu(GtkWidget* widget, gpointer data) {
     printf("Help Function\n");
-    // remove contents of vbox
-    // add help contents
-    // change the help callback function to reverse this
+    // TODO open a help window
 }
 
 // display's the log, drawing it using an openGL window
@@ -325,7 +323,6 @@ static void activate (GtkApplication* app, gpointer* user_data) {
     g_signal_connect_swapped(helpMi, "activate", G_CALLBACK(helpMenu), NULL);
 
     standardView(vbox);
-    //helpView(vbox);
 
     gtk_widget_show_all (window);
 }
