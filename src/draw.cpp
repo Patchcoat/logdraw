@@ -125,10 +125,7 @@ void drawDtFloatLine(grp* dtgrp) {
     for (int i = 0; i < grpSize; i++) {
         float x = dtgrp->dt.array[i].data.f;
         int element = dtgrp->dt.array[i].time.time - time_front;
-        printf("%d\n", element);
-        // TODO cast causes y to be 0 for some reason
         float y = static_cast<float>(element);
-        printf("|%d\n", y);
         vertices[i*3] = x;
         vertices[i*3+1] = y;
         vertices[i*3+2] = 0;

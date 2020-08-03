@@ -171,10 +171,18 @@ float mtchstof(char* str, regmatch_t matchptr) {
     float n = 0;
     int neg = 0;
     int dot = 0;
-    if (str[matchptr.rm_so] == '-')
+    int start = matchptr.rm_so;
+    // loop past everything that isn't a number
+    while (!(str[start] == '.' || str[start] == '-' ||
+            (str[start] >= '0' && str[start] <= '9')))
+        start++;
+    //if (str[matchptr.rm_so] == '-')
+    if (str[start] == '-') {
         neg = 1;
+        start++;
+    }
     // integer component
-    for (int i = matchptr.rm_so+neg; i < matchptr.rm_eo; i++) {
+    for (int i = start; i < matchptr.rm_eo; i++) {
         if (str[i] == '.') {
             dot = i+1;
             // add 1 so that if the dot is at point 0, "if (dot)" is still true
@@ -408,9 +416,7 @@ void loadtm(char* line, regmatch_t* matchptr, grp* dtgrp, pt* point) {
         if (match.rm_eo < 0)
             return;
         t.tm_sec = mtchstoi(line, match);
-        //printf("%d\n", t.tm_sec);
         point->time.time = mktime(&t);
-        //printf("%d\n", (unsigned int)point->time.time);
         break;
       }
       case Date: {
@@ -514,6 +520,7 @@ void loaddt(char* line, regmatch_t* matchptr, grp* dtgrp, pt* point) {
           if (match.rm_eo < 0)
               return;
           point->data.f = mtchstof(line, match);
+          //printf("%s%f\n", line, point->data.f);
           break;
         }
         case String: {
