@@ -15,7 +15,7 @@
 // these are each the regex that can be used to identify certain values
 #define INT_REGEX "\\(-\\{0,1\\}[0-9]\\{1,2\\}\\)"
 #define FLOAT_REGEX "\\(-\\{0,1\\}[0-9]\\{1,\\}\\.\\{0,1\\}[0-9]*\\)"
-#define POSITIVE_INT_REGEX "\\([0-9]\\{1,2\\}\\)"
+#define POSITIVE_INT_REGEX "\\([0-9]\\{1,\\}\\)"
 #define STRING_REGEX "\\([[:print:]]\\{1,\\}\\)"
 #define HEX_REGEX "\\([A-Za-z0-9]\\{6,8\\}\\)"
 
@@ -155,10 +155,10 @@ char* replace(char* text, char* ftext, char* rtext) {
 // takes in a string, a matchptr, and return the number at that location
 int mtchstoi(char* str, regmatch_t matchptr) {
     int n = 0;
-    int neg = 0;
-    if (str[matchptr.rm_so] == '-')
-        neg = 1;
+    int neg = str[matchptr.rm_so] == '-';
     for (int i = matchptr.rm_so+neg; i < matchptr.rm_eo; i++) {
+        if (str[i] > '9' || str[i] < '0')
+            break;
         n *= 10;
         n += str[i] - '0';
     }
@@ -407,6 +407,10 @@ void loadtm(char* line, regmatch_t* matchptr, grp* dtgrp, pt* point) {
         regmatch_t match = matchptr[dtgrp->tmordr[1]];
         if (match.rm_eo < 0)
             return;
+        t.tm_sec = mtchstoi(line, match);
+        //printf("%d\n", t.tm_sec);
+        point->time.time = mktime(&t);
+        //printf("%d\n", (unsigned int)point->time.time);
         break;
       }
       case Date: {

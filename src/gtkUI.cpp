@@ -181,34 +181,35 @@ void* logDisplay(void* indexPtr) {
     switch (uidtgrp[index].dtfmt) {
       case Int:
         printf("%d ", index);
-        printf("Integer");
+        printf("Integer\n");
         break;
       case Float:
         printf("%d ", index);
-        printf("Float");
+        printf("Float\n");
+        drawDtFloatLine(&uidtgrp[index]);
         break;
       case String:
         printf("%d ", index);
-        printf("String");
+        printf("String\n");
         break;
       case Vec2d:
         printf("%d ", index);
-        printf("Vec2d");
+        printf("Vec2d\n");
         break;
       case Vec3d:
         drawDt3dLine(&uidtgrp[index]);
         break;
       case Vec4d:
         printf("%d ", index);
-        printf("Vec4d");
+        printf("Vec4d\n");
         break;
       case ColorRGB:
         printf("%d ", index);
-        printf("ColorRGB");
+        printf("ColorRGB\n");
         break;
       case ColorHex:
         printf("%d ", index);
-        printf("ColorHex");
+        printf("ColorHex\n");
         break;
       default:
         printf("%s\n", uidtgrp[index].name);

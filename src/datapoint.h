@@ -1,7 +1,7 @@
 #ifndef DATAPOINT_H
 #define DATAPOINT_H
 
-#include <time.h>// datapoint time value
+#include <chrono>// datapoint time value
 #include <regex.h>// keep in mind this is POSIX, and linux only
 // vectors
 typedef struct {

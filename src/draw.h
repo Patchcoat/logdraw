@@ -9,7 +9,7 @@
 #include "datapoint.h"
 
 void drawDtInt(grp* dtgrp);
-void drawDtFloat(grp* dtgrp);
+void drawDtFloatLine(grp* dtgrp);
 void drawDtString(grp* dtgrp);
 void drawDt2dLine(grp* dtgrp);
 void drawDt3dLine(grp* dtgrp);
