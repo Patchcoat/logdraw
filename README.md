@@ -1,6 +1,8 @@
 # logdraw
 A utility for visualizing log files, written in C++ and OpenGL. It is currently on pause as I work on other projects, but I do plan on coming back to it.
 
+![2021-08-13-174856_3200x900_scrot](https://user-images.githubusercontent.com/5828713/129430285-88dbfbea-6b5a-4fb6-9886-35bd312b481f.png)
+
 ## The General Idea
 Often when writing a program it's useful to be able to write a bunch of information to a file; temperature in a greenhouse, XYZ positions of a robot, frametimes in a video game, and so on. But then this data needs to be visualized in order to be useful. This program is meant to be able to read and render the data in these files in real-time, as those files are being written to.
 
